@@ -8,6 +8,5 @@ namespace Music
         public string Artist { get; set; }
         public TimeSpan Duration { get; set; }
         public int YearOfPublication { get; set; }
-        public int NumberOfSongs { get; set; }
     }
 }
