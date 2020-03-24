@@ -2076,7 +2076,7 @@ function json2table100(json) {
         headerRow += "<th>" + capitalizeFirstLetter(colName) + "</th>";
     });
     json.forEach(function (row) {
-        bodyRows += "<tr>";
+        bodyRows += "<tr class='tablecontent'>";
         // loop over object properties and create cells
         cols.forEach(function (colName) {
             bodyRows += "<td>" + (typeof row[colName] === "object" ? JSON.stringify(row[colName]) : row[colName]) + "</td>";
