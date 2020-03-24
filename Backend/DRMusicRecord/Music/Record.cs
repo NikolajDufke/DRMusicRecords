@@ -6,7 +6,7 @@ namespace Music
     {
         public string Title { get; set; }
         public string Artist { get; set; }
-        public TimeSpan Duration { get; set; }
+        public int Duration { get; set; }
         public int YearOfPublication { get; set; }
     }
 }
