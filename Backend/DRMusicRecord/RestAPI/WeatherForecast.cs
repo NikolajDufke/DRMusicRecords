@@ -1,6 +1,6 @@
 using System;
 
-namespace DRMucisRecords
+namespace RestAPI
 {
     public class WeatherForecast
     {

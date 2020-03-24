@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mucis
+namespace Music
 {
     public class Record
     {
