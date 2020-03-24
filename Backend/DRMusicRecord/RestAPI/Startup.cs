@@ -26,6 +26,10 @@ namespace RestAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCors(option =>
+            {
+                option.AddPolicy("AllowLocalhost", builder => builder.AllowAnyOrigin().WithOrigins("http://localhost:3000"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,6 +39,8 @@ namespace RestAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("AllowLocalhost");
 
             app.UseHttpsRedirection();
 
