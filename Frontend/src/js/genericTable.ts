@@ -6,16 +6,16 @@ export function json2table100(json: any): string {
         headerRow += "<th>" + capitalizeFirstLetter(colName) + "</th>"
     });
     json.forEach((row: any) => {
-        bodyRows += "<tr id='tablecontent'>";
+        bodyRows += "<tr>";
         // loop over object properties and create cells
         cols.forEach((colName: string) => {
             bodyRows += "<td>" + (typeof row[colName] === "object" ? JSON.stringify(row[colName]) : row[colName]) + "</td>";
         });
         bodyRows += "</tr>";
     });
-    return "<table class='table table-striped'><thead><tr>" +
+    return "<table  class='table table-striped'><thead><tr>" +
         headerRow +
-        "</tr></thead><tbody >" +
+        "</tr></thead><tbody id='tablecontent'>" +
         bodyRows +
         "</tbody ></table>";
 }
