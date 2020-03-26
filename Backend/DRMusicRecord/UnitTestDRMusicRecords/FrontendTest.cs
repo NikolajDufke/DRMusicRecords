@@ -31,7 +31,7 @@ namespace UnitTestDRMusicRecords
         [TestMethod]
         public void Title()
         {
-            _driver.Navigate().GoToUrl("http://localhost:3000/");
+            _driver.Navigate().GoToUrl("https://drrecordswebpage.azurewebsites.net/");
 
             string title = _driver.Title;
             Assert.AreEqual("Coding Template", title);
@@ -40,7 +40,7 @@ namespace UnitTestDRMusicRecords
         [TestMethod]
         public void TestTabelWithAllRecords()
         {
-            _driver.Navigate().GoToUrl("http://localhost:3000/");
+            _driver.Navigate().GoToUrl("https://drrecordswebpage.azurewebsites.net/");
 
             WebDriverWait wait = new WebDriverWait(_driver, new TimeSpan(0,0,10));
 

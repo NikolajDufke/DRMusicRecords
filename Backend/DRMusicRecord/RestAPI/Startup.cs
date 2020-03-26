@@ -42,7 +42,7 @@ namespace RestAPI
             }
           
             app.UseCors("AllowAzurehost");
-            app.UseCors("AllowLocalhost");
+      
             app.UseHttpsRedirection();
 
             app.UseRouting();
