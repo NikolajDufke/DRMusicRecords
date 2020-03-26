@@ -2076,7 +2076,7 @@ function json2table100(json) {
         headerRow += "<th>" + capitalizeFirstLetter(colName) + "</th>";
     });
     json.forEach(function (row) {
-        bodyRows += "<tr class='tablecontent'>";
+        bodyRows += "<tr id='tablecontent'>";
         // loop over object properties and create cells
         cols.forEach(function (colName) {
             bodyRows += "<td>" + (typeof row[colName] === "object" ? JSON.stringify(row[colName]) : row[colName]) + "</td>";
@@ -2110,7 +2110,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _genericTable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./genericTable */ "./src/js/genericTable.ts");
 
 
-var BaseUri = "https://localhost:44361/api/record";
+// let BaseUri: string = "https://localhost:44361/api/record"
+var BaseUri = "https://drrecordsapi.azurewebsites.net/api/record";
 var contentElement = document.getElementById("content");
 var element = document.getElementById("table_content");
 var AllRecords;

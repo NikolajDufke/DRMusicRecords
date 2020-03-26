@@ -5,7 +5,9 @@ import Axios, {
 
 import {json2table100} from "./genericTable";
 
-let BaseUri: string = "https://localhost:44361/api/record"
+// let BaseUri: string = "https://localhost:44361/api/record"
+
+let BaseUri: string = "https://drrecordsapi.azurewebsites.net/api/record"
 let contentElement: HTMLDivElement = <HTMLDivElement> document.getElementById("content");
 let element: HTMLDivElement = <HTMLDivElement> document.getElementById("table_content");
 let AllRecords: JSON;

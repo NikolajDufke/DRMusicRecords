@@ -40,7 +40,6 @@ namespace UnitTestDRMusicRecords
         [TestMethod]
         public void TestTabelWithAllRecords()
         {
-
             _driver.Navigate().GoToUrl("http://localhost:3000/");
 
             WebDriverWait wait = new WebDriverWait(_driver, new TimeSpan(0,0,10));
@@ -49,6 +48,5 @@ namespace UnitTestDRMusicRecords
            
             Assert.AreEqual(8, content.Count());
         }
-
     }
 }

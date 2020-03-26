@@ -29,6 +29,7 @@ namespace RestAPI
             services.AddCors(option =>
             {
                 option.AddPolicy("AllowLocalhost", builder => builder.AllowAnyOrigin().WithOrigins("http://localhost:3000"));
+                option.AddPolicy("AllowAzurehost", builder => builder.AllowAnyOrigin().WithOrigins("https://drrecordswebpage.azurewebsites.net/"));
             });
         }
 
@@ -39,9 +40,9 @@ namespace RestAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
+          
+            app.UseCors("AllowAzurehost");
             app.UseCors("AllowLocalhost");
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
