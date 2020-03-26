@@ -43,6 +43,27 @@ namespace RestAPI.Controllers
             return Records;
         }
 
+        [HttpGet]
+        [Route("title/{substring}")]
+        public IEnumerable<Record> GetFromTitle(string substring)
+        {
+            return Records.FindAll((r => r.Title.Contains(substring)));
+        }
+
+        [HttpGet]
+        [Route("artist/{substring}")]
+        public IEnumerable<Record> GetFromArtist(string substring)
+        {
+            return Records.FindAll((r => r.Artist.Contains(substring)));
+        }
+
+        [HttpGet]
+        [Route("yearOfPublication/{substring}")]
+        public IEnumerable<Record> GetFromYearOfPublication(string substring)
+        {
+            return Records.FindAll((r => r.YearOfPublication.Equals(substring)));
+        }
+
         // GET: api/Record/5
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
