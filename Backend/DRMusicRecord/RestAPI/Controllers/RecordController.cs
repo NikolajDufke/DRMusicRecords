@@ -54,14 +54,14 @@ namespace RestAPI.Controllers
         [Route("artist/{substring}")]
         public IEnumerable<Record> GetFromArtist(string substring)
         {
-            return Records.FindAll(r => r.Artist.Contains(substring));
+            return Records.FindAll(r => r.Artist.ToLower().Contains(substring.ToLower()));
         }
 
         [HttpGet]
-        [Route("yearofpublication/{substring}")]
-        public IEnumerable<Record> GetFromYearOfPublication(int substring)
+        [Route("yearofpublication/{year}")]
+        public IEnumerable<Record> GetFromYearOfPublication(int year)
         {
-            return Records.FindAll(r => r.YearOfPublication.Equals(substring));
+            return Records.FindAll(r => r.YearOfPublication.Equals(year));
         }
 
         // GET: api/Record/5
