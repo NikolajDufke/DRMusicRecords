@@ -58,7 +58,7 @@ namespace UnitTestDRMusicRecords
         }
 
         [TestMethod]
-        public void TestSearch()
+        public void TestTitleSearch()
         {
             IWebElement buttonSearchelement = _driver.FindElement(By.Id("searchButton"));
             IWebElement textElement = _driver.FindElement(By.Id("searchText"));
@@ -76,7 +76,15 @@ namespace UnitTestDRMusicRecords
             IWebElement FirstResult = getWait().Until(d => d.FindElement(By.Id("tablecontent")));
             IList<IWebElement> tableRow = FirstResult.FindElements(By.TagName("tr"));
             Assert.AreEqual(1, tableRow.Count());
+        }
 
+        [TestMethod]
+        public void TestYearSearch()
+        {
+            IWebElement buttonSearchelement = _driver.FindElement(By.Id("searchButton"));
+            IWebElement textElement = _driver.FindElement(By.Id("searchText"));
+            IWebElement selectElement = _driver.FindElement(By.Id("searchSelect"));
+            SelectElement selec = new SelectElement(selectElement);
 
             textElement.SendKeys("2020");
 
@@ -84,8 +92,8 @@ namespace UnitTestDRMusicRecords
 
             buttonSearchelement.Click();
 
-            FirstResult = getWait().Until(d => d.FindElement(By.Id("tablecontent")));
-            tableRow = FirstResult.FindElements(By.TagName("tr"));
+            IWebElement FirstResult = getWait().Until(d => d.FindElement(By.Id("tablecontent")));
+            IList<IWebElement> tableRow = FirstResult.FindElements(By.TagName("tr"));
             Assert.AreEqual(8, tableRow.Count());
         }
     }
