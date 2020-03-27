@@ -2110,49 +2110,52 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _genericTable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./genericTable */ "./src/js/genericTable.ts");
 
 
-// let BaseUri: string = "https://localhost:44361/api/record"
+//let BaseUri: string = "https://localhost:44361/api/record"
 var BaseUri = "https://drrecordsapi.azurewebsites.net/api/record";
-var contentElement = document.getElementById("content");
-var element = document.getElementById("table_content");
-var AllRecords;
+// ***Load all records at session start***
 var newRecordElement = document.getElementById("newRecord");
 var newRecordinputFields;
-// let Record1 = Object.create(Record)
-// console.log(Object.keys(Record1));
-// // Object.keys(Record).forEach(element => {
-// //     console.log(element); 
-// // });
 newRecordinputFields = "<div class='container'>" + MakeInputFields("title") + MakeInputFields("artist") + MakeInputFields("Duration") + MakeInputFields("YearOfPublication") + "</div>";
-console.log(MakeInputFields("title"));
 newRecordElement.innerHTML = newRecordinputFields;
 function MakeInputFields(Name) {
     return "<div class='row'>" + "<span class='col' id=' title" + Name + "'> " + Name + " </span> <input class='col' id=' input" + Name + "'></input> <span class='col'></span>" + "</div>";
 }
-// let sentence: string = `Hello, my name is ${ fullName }
-console.log("Getting localitems");
-_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.get(BaseUri).then(function (response) {
-    console.log(response.data);
-})
-    .catch(function (error) {
-    console.log(error.message);
-    console.log(error.response);
-    console.log(error.stack);
-});
-_node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.get(BaseUri).then(function (respone) {
-    console.log("getting Records... v15");
-    console.log(Date.now);
-    //  element.innerHTML = "<div class='spinner-border text-muted></div>";
-    //  setTimeout(() => {  console.log("waited 5 sek"); }, 5000);
-    var data = respone.data;
-    console.log(data);
-    var result = Object(_genericTable__WEBPACK_IMPORTED_MODULE_1__["json2table100"])(data);
-    console.log(result);
-    element.innerHTML = result;
-    // contentElement.innerHTML = JSON.stringify(respone.data);
-})
-    .catch(function (error) {
-    contentElement.innerHTML = error.message;
-});
+getAllRecords();
+//Get all records and place in table_content
+var content = document.getElementById("table_content");
+function getAllRecords() {
+    _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.get(BaseUri).then(function (respone) {
+        var data = respone.data;
+        var result = Object(_genericTable__WEBPACK_IMPORTED_MODULE_1__["json2table100"])(data);
+        content.innerHTML = result;
+    })
+        .catch(function (error) {
+        content.innerHTML = error.message;
+    });
+}
+// ***Search implementation*** 
+var searchButton = document.getElementById("searchButton");
+searchButton.addEventListener("click", Search);
+function Search() {
+    var searchSelected = document.getElementById("searchSelect");
+    var searchText = document.getElementById("searchText");
+    var uristring = BaseUri + "/" + searchSelected.value + "/" + searchText.value;
+    if (searchText.value == "" || searchText.value == null) {
+        getAllRecords();
+    }
+    else {
+        _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.get(uristring).then(function (respone) {
+            var data = respone.data;
+            var result = Object(_genericTable__WEBPACK_IMPORTED_MODULE_1__["json2table100"])(data);
+            content.innerHTML = result;
+        })
+            .catch(function (error) {
+            console.log(error.message);
+            content.innerHTML = searchText.value + " could not be found";
+        });
+    }
+}
+// ***Add Record Implementation***
 var buttonElement = document.getElementById("addButton");
 buttonElement.addEventListener("click", addRecord);
 function addRecord() {

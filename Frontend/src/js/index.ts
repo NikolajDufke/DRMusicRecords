@@ -5,13 +5,8 @@ import Axios, {
 
 import {json2table100} from "./genericTable";
 
-// let BaseUri: string = "https://localhost:44361/api/record"
-
+//let BaseUri: string = "https://localhost:44361/api/record"
 let BaseUri: string = "https://drrecordsapi.azurewebsites.net/api/record"
-let contentElement: HTMLDivElement = <HTMLDivElement> document.getElementById("content");
-let element: HTMLDivElement = <HTMLDivElement> document.getElementById("table_content");
-let AllRecords: JSON;
-
 
 
 interface IRecord {
@@ -21,75 +16,72 @@ interface IRecord {
    YearOfPublication: number,
 }
 
+// ***Load all records at session start***
 let newRecordElement: HTMLDivElement = <HTMLDivElement> document.getElementById("newRecord");
-
 let newRecordinputFields: string 
 
-
-
-
-
-// let Record1 = Object.create(Record)
-// console.log(Object.keys(Record1));
-// // Object.keys(Record).forEach(element => {
-// //     console.log(element); 
-// // });
-
-
-
 newRecordinputFields = "<div class='container'>"+ MakeInputFields("title") + MakeInputFields("artist") + MakeInputFields("Duration") + MakeInputFields("YearOfPublication") + "</div>";
-
-
-console.log(MakeInputFields("title"))
-
 newRecordElement.innerHTML = newRecordinputFields;
-
- 
-
 
 function MakeInputFields(Name: string): string {
     return "<div class='row'>"+ "<span class='col' id=' title" + Name + "'> " + Name +" </span> <input class='col' id=' input" + Name + "'></input> <span class='col'></span>" + "</div>";
 }
 
-// let sentence: string = `Hello, my name is ${ fullName }
+getAllRecords();
 
-console.log("Getting localitems");
-Axios.get(BaseUri).then(
-    function(response :AxiosResponse) : void{
-      
-        console.log(response.data)
-    }
-)
-.catch(
-    function(error: AxiosError):void{
-        console.log(error.message)
-        console.log(error.response)
-        console.log(error.stack)
+//Get all records and place in table_content
+let content: HTMLDivElement = <HTMLDivElement> document.getElementById("table_content");
 
-    }
-)
-
-
+function getAllRecords(): void {
  Axios.get(BaseUri).then(
      function(respone: AxiosResponse): void{
-         console.log("getting Records... v15");
-         console.log(Date.now)
-        //  element.innerHTML = "<div class='spinner-border text-muted></div>";
-        //  setTimeout(() => {  console.log("waited 5 sek"); }, 5000);
     let data: IRecord[] = respone.data;
-        console.log(data);
     let result: string = json2table100(data);
-console.log(result);
-     element.innerHTML = result;
-        // contentElement.innerHTML = JSON.stringify(respone.data);
+    content.innerHTML = result;
      }
  )
  .catch(
      function(error: AxiosError): void{
-        contentElement.innerHTML = error.message;
+        content.innerHTML = error.message;
+     }
+ )    
+}
+
+
+
+ // ***Search implementation*** 
+let searchButton : HTMLButtonElement = <HTMLButtonElement> document.getElementById("searchButton")
+searchButton.addEventListener("click", Search);
+
+function Search(): void {
+
+let searchSelected : HTMLSelectElement = <HTMLSelectElement> document.getElementById("searchSelect");
+let searchText : HTMLInputElement = <HTMLInputElement> document.getElementById("searchText");
+let uristring: string = BaseUri + "/" + searchSelected.value + "/" + searchText.value;
+
+if (searchText.value == "" || searchText.value == null)
+{
+getAllRecords();
+}
+else 
+{
+Axios.get(uristring).then(
+    function(respone: AxiosResponse): void{
+    let data: IRecord[] = respone.data;
+    let result: string = json2table100(data);
+    content.innerHTML = result;
      }
  )
+ .catch(
+     function(error: AxiosError): void{
+         console.log(error.message);
+         content.innerHTML = searchText.value + " could not be found";
+     }
+ )    
+}     
+}
 
+// ***Add Record Implementation***
 let buttonElement: HTMLButtonElement = <HTMLButtonElement> document.getElementById("addButton");
 buttonElement.addEventListener("click", addRecord);
 
@@ -98,7 +90,6 @@ buttonElement.addEventListener("click", addRecord);
     let artist : HTMLInputElement = <HTMLInputElement> document.getElementById("inputauthor");
     let duration : HTMLInputElement = <HTMLInputElement> document.getElementById("inputDuration");
     let YearOfPublication : HTMLInputElement = <HTMLInputElement> document.getElementById("inputYearOfPublication");
-    
 
 Axios.post(BaseUri + 'Records', { 
     title : title.value,
@@ -110,8 +101,6 @@ Axios.post(BaseUri + 'Records', {
 }).catch(function(error){
     console.log(error)
 });
-
-
  }
 
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -29,11 +30,20 @@ namespace UnitTestDRMusicRecords
             _driver.Dispose();
         }
 
+        [TestInitialize]
+        public void init()
+        {
+            _driver.Navigate().GoToUrl(_webPage);
+        }
+
+        public WebDriverWait getWait()
+        {
+            return new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+        }
+
         [TestMethod]
         public void Title()
         {
-            _driver.Navigate().GoToUrl(_webPage);
-
             string title = _driver.Title;
             Assert.AreEqual("Coding Template", title);
         }
@@ -41,12 +51,41 @@ namespace UnitTestDRMusicRecords
         [TestMethod]
         public void TestTabelWithAllRecords()
         {
-            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-            _driver.Navigate().GoToUrl(_webPage);
-            
-            IWebElement FirstResult = wait.Until(d => d.FindElement(By.Id("tablecontent")));
+            IWebElement FirstResult = getWait().Until(d => d.FindElement(By.Id("tablecontent")));
             IList<IWebElement> tableRow = FirstResult.FindElements(By.TagName("tr"));
 
+            Assert.AreEqual(8, tableRow.Count());
+        }
+
+        [TestMethod]
+        public void TestSearch()
+        {
+            IWebElement buttonSearchelement = _driver.FindElement(By.Id("searchButton"));
+            IWebElement textElement = _driver.FindElement(By.Id("searchText"));
+            IWebElement selectElement = _driver.FindElement(By.Id("searchSelect"));
+            SelectElement selec = new SelectElement(selectElement);
+
+
+            textElement.SendKeys("Stjernen i det blå");
+
+            selec.SelectByText("Title");
+
+            buttonSearchelement.Click();
+
+
+            IWebElement FirstResult = getWait().Until(d => d.FindElement(By.Id("tablecontent")));
+            IList<IWebElement> tableRow = FirstResult.FindElements(By.TagName("tr"));
+            Assert.AreEqual(1, tableRow.Count());
+
+
+            textElement.SendKeys("2020");
+
+            selec.SelectByText("Year of Publication");
+
+            buttonSearchelement.Click();
+
+            FirstResult = getWait().Until(d => d.FindElement(By.Id("tablecontent")));
+            tableRow = FirstResult.FindElements(By.TagName("tr"));
             Assert.AreEqual(8, tableRow.Count());
         }
     }
