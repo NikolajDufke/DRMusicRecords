@@ -17,7 +17,7 @@ namespace UnitTestDRMusicRecords
         [TestInitialize]
         public void init()
         {
-            recordController = new RestAPI.Controllers.RecordController();
+            recordController = new RecordController();
         }
 
         [TestMethod]

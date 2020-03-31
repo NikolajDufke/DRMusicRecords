@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestAPI.Models
 {
-    public class Record
+    public class RecordDB
     {
         [Required]
         public int Id { get; set; }

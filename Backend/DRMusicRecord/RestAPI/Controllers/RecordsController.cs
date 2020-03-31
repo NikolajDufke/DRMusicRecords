@@ -19,18 +19,47 @@ namespace RestAPI.Controllers
         {
             _context = context;
 
+            AddRecords();
+
+
+
+        }
+
+        private async void AddRecords()
+        {
+            if (_context.Records.Count() == 0)
+            {
+                _context.Records.Add(new RecordDB()
+                    {Artist = "JAAIIL", Duration = 150, Title = "Superhelten", YearOfPublication = 2020});
+                _context.Records.Add(new RecordDB()
+                { Artist = "Karla og Liva", Duration = 150, Title = "Brug din fantasi", YearOfPublication = 2020 });
+                _context.Records.Add(new RecordDB()
+                { Artist = "Julie", Duration = 150, Title = "Stjernen i det blå", YearOfPublication = 2020 });
+                _context.Records.Add(new RecordDB()
+                { Artist = "Siff", Duration = 150, Title = "Mit hjerte der griner", YearOfPublication = 2020 });
+                _context.Records.Add(new RecordDB()
+                { Artist = "Mynthe", Duration = 150, Title = "Syng det ud", YearOfPublication = 2020 });
+                _context.Records.Add(new RecordDB()
+                { Artist = "Liva", Duration = 150, Title = "Ingen plan B", YearOfPublication = 2020 });
+                _context.Records.Add(new RecordDB()
+                { Artist = "William", Duration = 150, Title = "Stjerneskud", YearOfPublication = 2020 });
+                _context.Records.Add(new RecordDB()
+                { Artist = "D&A", Duration = 150, Title = "Boombadah basta", YearOfPublication = 2020 });
+                await _context.SaveChangesAsync();
+            }
+
         }
 
         // GET: api/Records
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Record>>> GetRecords()
+        public async Task<ActionResult<IEnumerable<RecordDB>>> GetRecords()
         {
             return await _context.Records.ToListAsync();
         }
 
         // GET: api/Records/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Record>> GetRecord(int id)
+        public async Task<ActionResult<RecordDB>> GetRecord(int id)
         {
             var record = await _context.Records.FindAsync(id);
 
@@ -46,14 +75,14 @@ namespace RestAPI.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRecord(int id, Record record)
+        public async Task<IActionResult> PutRecord(int id, RecordDB recordDb)
         {
-            if (id != record.Id)
+            if (id != recordDb.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(record).State = EntityState.Modified;
+            _context.Entry(recordDb).State = EntityState.Modified;
 
             try
             {
@@ -78,17 +107,17 @@ namespace RestAPI.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Record>> PostRecord(Record record)
+        public async Task<ActionResult<RecordDB>> PostRecord(RecordDB recordDb)
         {
-            _context.Records.Add(record);
+            _context.Records.Add(recordDb);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRecord", new { id = record.Id }, record);
+            return CreatedAtAction("GetRecord", new { id = recordDb.Id }, recordDb);
         }
 
         // DELETE: api/Records/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Record>> DeleteRecord(int id)
+        public async Task<ActionResult<RecordDB>> DeleteRecord(int id)
         {
             var record = await _context.Records.FindAsync(id);
             if (record == null)
