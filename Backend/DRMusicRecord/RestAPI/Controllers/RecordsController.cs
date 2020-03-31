@@ -18,7 +18,7 @@ namespace RestAPI.Controllers
         public RecordsController(RecordDBContext context)
         {
             _context = context;
-
+          
         }
 
         // GET: api/Records
