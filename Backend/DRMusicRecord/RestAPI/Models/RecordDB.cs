@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestAPI.Models
 {
-    public class RecordDB
+    public class RecordDB 
     {
         [Required]
         public int Id { get; set; }
@@ -14,6 +14,8 @@ namespace RestAPI.Models
         public string Artist { get; set; }
         public int Duration { get; set; }
         public int YearOfPublication { get; set; }
+
+        
     }
     
 }
