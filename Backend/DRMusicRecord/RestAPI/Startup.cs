@@ -32,8 +32,9 @@ namespace RestAPI
             services.AddControllers();
             services.AddCors(option =>
             {
-                option.AddPolicy("AllowLocalhost", builder => builder.AllowAnyOrigin().WithOrigins("http://localhost:3000"));
+                option.AddPolicy("AllowLocalhost", builder => builder.AllowAnyOrigin().WithOrigins("http://localhost:3000/"));
                 option.AddPolicy("AllowAzurehost", builder => builder.AllowAnyOrigin().WithOrigins("https://drrecordswebpage.azurewebsites.net/"));
+                option.AddPolicy("AllowAnyOrigin", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
 
             services.AddDbContext<RecordDBContext>(options => options.UseInMemoryDatabase("Records"));
@@ -55,8 +56,9 @@ namespace RestAPI
                 app.UseDeveloperExceptionPage();
             }
           
-            app.UseCors("AllowAzurehost");
-      
+            app.UseCors("AllowAnyOrigin");
+            
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

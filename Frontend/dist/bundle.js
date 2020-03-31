@@ -2111,14 +2111,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 //let BaseUri: string = "https://localhost:44361/api/record"
-var BaseUri = "https://drrecordsapi.azurewebsites.net/api/record";
+//let BaseUri: string = "https://drrecordsapi.azurewebsites.net/api/record"
+var BaseUri = "https://localhost:44361/api/record";
+var BaseUriv2 = "https://localhost:44361/api/v2/records";
 // ***Load all records at session start***
 var newRecordElement = document.getElementById("newRecord");
 var newRecordinputFields;
 newRecordinputFields = "<div class='container'>" + MakeInputFields("title") + MakeInputFields("artist") + MakeInputFields("Duration") + MakeInputFields("YearOfPublication") + "</div>";
 newRecordElement.innerHTML = newRecordinputFields;
 function MakeInputFields(Name) {
-    return "<div class='row'>" + "<span class='col' id=' title" + Name + "'> " + Name + " </span> <input class='col' id=' input" + Name + "'></input> <span class='col'></span>" + "</div>";
+    return "<div class='row'>" + "<span class='col' id='title" + Name + "'> " + Name + " </span> <input class='col' type='text' id='input" + Name + "'></input> <span class='col'></span>" + "</div>";
 }
 getAllRecords();
 //Get all records and place in table_content
@@ -2159,16 +2161,19 @@ function Search() {
 var buttonElement = document.getElementById("addButton");
 buttonElement.addEventListener("click", addRecord);
 function addRecord() {
+    console.log("addrecord");
     var title = document.getElementById("inputtitle");
-    var artist = document.getElementById("inputauthor");
+    var artist = document.getElementById("inputartist");
     var duration = document.getElementById("inputDuration");
     var YearOfPublication = document.getElementById("inputYearOfPublication");
-    _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.post(BaseUri + 'Records', {
-        title: title.value,
-        Artist: artist.value,
-        duration: duration.value,
-        YearOfPublication: YearOfPublication.valueAsNumber
-    }).then(function (response) {
+    var options = { headers: { 'Content-Type': 'application/json' } };
+    _node_modules_axios_index__WEBPACK_IMPORTED_MODULE_0___default.a.post(BaseUriv2, {
+        "Title": title.value,
+        "Artist": artist.value,
+        "Duration": duration.valueAsNumber,
+        "YearOfPublication": YearOfPublication.valueAsNumber
+    }, options)
+        .then(function (response) {
         console.log(response.data);
     }).catch(function (error) {
         console.log(error);

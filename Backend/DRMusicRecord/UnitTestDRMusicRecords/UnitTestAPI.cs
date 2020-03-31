@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Music;
 using Newtonsoft.Json;
 using RestAPI.Controllers;
+using RestAPI.Models;
 
 namespace UnitTestDRMusicRecords
 {
@@ -13,11 +15,13 @@ namespace UnitTestDRMusicRecords
     public class UnitTestAPI
     {
         private RecordController recordController;
+        private RecordsController recordsController;
 
         [TestInitialize]
         public void init()
         {
             recordController = new RecordController();
+            recordsController = new RecordsController(new RecordDBContext(new DbContextOptions<RecordDBContext>()));
         }
 
         [TestMethod]
@@ -148,6 +152,12 @@ namespace UnitTestDRMusicRecords
             recordController.Post(JsonConvert.SerializeObject(newRecord));
         }
 
+        [TestMethod]
+        public void GetAllRecordDBs()
+        {
+            int actual = recordsController.GetRecords().Result.Value.Count();
+            Assert.AreEqual(8, actual);
+        }
 
         #endregion
     }

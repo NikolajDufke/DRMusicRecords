@@ -6,8 +6,10 @@ import Axios, {
 import {json2table100} from "./genericTable";
 
 //let BaseUri: string = "https://localhost:44361/api/record"
-let BaseUri: string = "https://drrecordsapi.azurewebsites.net/api/record"
-
+//let BaseUri: string = "https://drrecordsapi.azurewebsites.net/api/record"
+let BaseUri: string = "https://localhost:44361/api/record"
+let BaseUriv2: string = "https://localhost:44361/api/v2/records"
+//let BaseUriV2: string = "https://drrecordsapi.azurewebsites.net/api/v2/records"
 
 interface IRecord {
    Title: string,
@@ -24,7 +26,7 @@ newRecordinputFields = "<div class='container'>"+ MakeInputFields("title") + Mak
 newRecordElement.innerHTML = newRecordinputFields;
 
 function MakeInputFields(Name: string): string {
-    return "<div class='row'>"+ "<span class='col' id=' title" + Name + "'> " + Name +" </span> <input class='col' id=' input" + Name + "'></input> <span class='col'></span>" + "</div>";
+    return "<div class='row'>"+ "<span class='col' id='title" + Name + "'> " + Name +" </span> <input class='col' type='text' id='input" + Name + "'></input> <span class='col'></span>" + "</div>";
 }
 
 getAllRecords();
@@ -86,27 +88,26 @@ let buttonElement: HTMLButtonElement = <HTMLButtonElement> document.getElementBy
 buttonElement.addEventListener("click", addRecord);
 
  function addRecord(): void {
+
+    console.log("addrecord");
     let title : HTMLInputElement = <HTMLInputElement> document.getElementById("inputtitle");
-    let artist : HTMLInputElement = <HTMLInputElement> document.getElementById("inputauthor");
+    let artist : HTMLInputElement = <HTMLInputElement> document.getElementById("inputartist");
     let duration : HTMLInputElement = <HTMLInputElement> document.getElementById("inputDuration");
     let YearOfPublication : HTMLInputElement = <HTMLInputElement> document.getElementById("inputYearOfPublication");
 
-Axios.post(BaseUri + 'Records', { 
-    title : title.value,
-    Artist : artist.value,
-    duration : duration.value,
-    YearOfPublication : YearOfPublication.valueAsNumber
-}).then(function (response){
+    const options = {headers: { 'Content-Type' : 'application/json'}};
+
+Axios.post(
+    BaseUriv2, 
+    { 
+    "Title" :  title.value,
+    "Artist" : artist.value,
+    "Duration" : duration.valueAsNumber,
+    "YearOfPublication" : YearOfPublication.valueAsNumber
+    }, options)
+    .then(function (response){
     console.log(response.data)
 }).catch(function(error){
     console.log(error)
 });
  }
-
-
-
- 
-
-
-
-
